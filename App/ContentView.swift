@@ -157,7 +157,7 @@ struct ContentView: View {
     }
     
     @ViewBuilder
-    var landscapeContent: some View {
+    func landscapeContent(width: CGFloat) -> some View {
         HStack(alignment: .top, spacing: 0) {
             VStack(spacing: 12) {
                 if let winner = winnerTeam {
@@ -194,7 +194,7 @@ struct ContentView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 5)
-            .frame(width: UIScreen.main.bounds.width / 3)
+            .frame(width: max(215, min(300, width * 0.32)))
             
             Divider()
             
@@ -345,26 +345,45 @@ struct ContentView: View {
     }
     
     @ViewBuilder
-    var portraitContent: some View {
+    func portraitContent(viewHeight: CGFloat) -> some View {
         ScrollView {
-            VStack(spacing: 15) {
-                portraitTeamsHeader
-                ruleOfSixCard
-                penaltyHistory
-                    .padding(.top, 5)
-                
-                if let winner = winnerTeam {
-                    winnerAnnouncementView(winner: winner)
-                        .padding(.horizontal)
-                        .padding(.top, 8)
-                } else {
-                    portraitInputControls
+            VStack(spacing: 0) {
+                VStack(spacing: 15) {
+                    portraitTeamsHeader
+                    ruleOfSixCard
+                    penaltyHistory
+                        .padding(.top, 5)
+                    
+                    if let winner = winnerTeam {
+                        winnerAnnouncementView(winner: winner)
+                            .padding(.horizontal)
+                            .padding(.top, 8)
+                    } else {
+                        portraitInputControls
+                    }
+                    
+                    portraitActionButtons
                 }
-                
-                portraitActionButtons
-                scorecard
+                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
+                .scrollTargetLayout()
+
+                VStack(spacing: 10) {
+                    if let winner = winnerTeam {
+                        winnerAnnouncementView(winner: winner)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
+                    } else {
+                        portraitCompactInputControls
+                            .padding(.top, 10)
+                    }
+
+                    scorecard
+                }
+                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
+                .scrollTargetLayout()
             }
         }
+        .scrollTargetBehavior(.paging)
     }
     
     @ViewBuilder
@@ -523,6 +542,55 @@ struct ContentView: View {
         }
         .padding(.horizontal)
     }
+
+    @ViewBuilder
+    var portraitCompactInputControls: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 10) {
+                Text("Round \(Int(currentRound)): \(currentTeamTurn == 1 ? team1Name : team2Name) #:")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+                
+                Picker("Player Number", selection: $selectedPlayerNumber) {
+                    ForEach(availablePlayerNumbers, id: \.self) { number in
+                        Text(formatPlayerNumber(number))
+                            .tag(number)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 72, height: 72)
+            }
+            
+            HStack(spacing: 12) {
+                Button(action: {
+                    recordPenalty(team: currentTeamTurn, playerNumber: selectedPlayerNumber, scored: true)
+                }) {
+                    Text("Goal")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 11)
+                        .background(currentTeamTurn == 1 ? (availableColors[team1Color] ?? .blue) : (availableColors[team2Color] ?? .red), in: RoundedRectangle(cornerRadius: 10))
+                }
+                .sensoryFeedback(.success, trigger: team1Score + team2Score)
+                
+                Button(action: {
+                    recordPenalty(team: currentTeamTurn, playerNumber: selectedPlayerNumber, scored: false)
+                }) {
+                    Text("Miss")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(currentTeamTurn == 1 ? (availableColors[team1Color] ?? .blue) : (availableColors[team2Color] ?? .red))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 11)
+                        .background((currentTeamTurn == 1 ? (availableColors[team1Color] ?? .blue) : (availableColors[team2Color] ?? .red)).opacity(0.2), in: RoundedRectangle(cornerRadius: 10))
+                }
+                .sensoryFeedback(.error, trigger: team1Attempts + team2Attempts)
+            }
+        }
+        .padding(.horizontal)
+    }
     
     @ViewBuilder
     var portraitActionButtons: some View {
@@ -669,9 +737,11 @@ struct ContentView: View {
                     }
                     
                     if isLandscape {
-                        landscapeContent
+                        landscapeContent(width: geometry.size.width)
                     } else {
-                        portraitContent
+                        GeometryReader { portraitGeometry in
+                            portraitContent(viewHeight: portraitGeometry.size.height)
+                        }
                     }
                 }
             }
