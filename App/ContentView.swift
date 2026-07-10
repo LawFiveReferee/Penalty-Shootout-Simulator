@@ -1871,7 +1871,7 @@ struct AboutView: View {
                             .foregroundStyle(.blue)
                         }
                         
-                        Link(destination: URL(string: "mailto:support@law5ref.com")!) {
+                        Link(destination: URL(string: "https://www.law5ref.com/contact.html")!) {
                             HStack {
                                 Image(systemName: "envelope.fill")
                                 Text("Support")

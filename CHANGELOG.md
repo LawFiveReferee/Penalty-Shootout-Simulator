@@ -5,6 +5,7 @@
 - Changed the shooting-order switch to an icon-only double-arrow button.
 - Bumped the build number to make Bitrig preview refreshes easy to verify.
 - Updated app web links to the current Law Five Referee website paths.
+- Changed Support to open the Law Five Referee contact page.
 
 ## 1.5.0 (Build 3)
 
