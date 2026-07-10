@@ -41,6 +41,8 @@ struct ContentView: View {
     @AppStorage("team1Attempts") private var team1Attempts = 0
     @AppStorage("team2Attempts") private var team2Attempts = 0
     @AppStorage("currentRound") private var currentRound = 1
+    @AppStorage("firstTeam") private var firstTeam = 1
+    @AppStorage("lastRecordedTeam") private var lastRecordedTeam = 0
     @AppStorage("team1Penalties") private var team1PenaltiesData = Data()
     @AppStorage("team2Penalties") private var team2PenaltiesData = Data()
     
@@ -94,21 +96,34 @@ struct ContentView: View {
     var currentTeamTurn: Int {
         let team1RoundAttempts = team1Attempts - ((currentRound - 1) * teamSize)
         let team2RoundAttempts = team2Attempts - ((currentRound - 1) * teamSize)
+        let secondTeam = firstTeam == 1 ? 2 : 1
+        let firstTeamRoundAttempts = firstTeam == 1 ? team1RoundAttempts : team2RoundAttempts
+        let secondTeamRoundAttempts = secondTeam == 1 ? team1RoundAttempts : team2RoundAttempts
         
-        if team1RoundAttempts < teamSize {
-            if team2RoundAttempts < team1RoundAttempts {
-                return 2
+        if firstTeamRoundAttempts < teamSize {
+            if secondTeamRoundAttempts < firstTeamRoundAttempts {
+                return secondTeam
             } else {
-                return 1
+                return firstTeam
             }
-        } else if team2RoundAttempts < teamSize {
-            return 2
+        } else if secondTeamRoundAttempts < teamSize {
+            return secondTeam
         } else {
-            return 1
+            return firstTeam
         }
     }
-    
 
+    var canSwitchTeamOrder: Bool {
+        winnerTeam == nil && (team1Attempts + team2Attempts) < 2
+    }
+
+    var firstTeamName: String {
+        firstTeam == 1 ? team1Name : team2Name
+    }
+
+    var secondTeamName: String {
+        firstTeam == 1 ? team2Name : team1Name
+    }
     
     var team1Tally: Int {
         let team1Goals = team1Score
@@ -354,29 +369,50 @@ struct ContentView: View {
     
     @ViewBuilder
     var portraitTeamsHeader: some View {
-        HStack(spacing: 30) {
-            TeamView(
-                name: team1Name,
-                color: availableColors[team1Color] ?? .blue,
-                score: team1Score,
-                isCurrentTurn: currentTeamTurn == 1
-            )
-            
-            Text("vs")
-                .font(.title3)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-            
-            TeamView(
-                name: team2Name,
-                color: availableColors[team2Color] ?? .red,
-                score: team2Score,
-                isCurrentTurn: currentTeamTurn == 2
-            )
+        VStack(spacing: 8) {
+            HStack(spacing: 30) {
+                TeamView(
+                    name: team1Name,
+                    color: availableColors[team1Color] ?? .blue,
+                    score: team1Score,
+                    isCurrentTurn: currentTeamTurn == 1
+                )
+                
+                Text("vs")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.secondary)
+                
+                TeamView(
+                    name: team2Name,
+                    color: availableColors[team2Color] ?? .red,
+                    score: team2Score,
+                    isCurrentTurn: currentTeamTurn == 2
+                )
+            }
+
+            switchTeamOrderButton
         }
         .padding(.horizontal)
         .padding(.top, 14)
         .padding(.bottom, 7)
+    }
+
+    @ViewBuilder
+    var switchTeamOrderButton: some View {
+        Button(action: switchTeamOrder) {
+            Label("Switch order", systemImage: "arrow.left.arrow.right")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(canSwitchTeamOrder ? .blue : .secondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Color(.systemGray6), in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .disabled(!canSwitchTeamOrder)
+        .opacity(canSwitchTeamOrder ? 1.0 : 0.55)
+        .accessibilityLabel("Switch shooting order")
+        .accessibilityHint("\(firstTeamName) shoots first, \(secondTeamName) shoots second")
     }
     
     @ViewBuilder
@@ -822,6 +858,8 @@ struct ContentView: View {
                 team2Score += 1
             }
         }
+
+        lastRecordedTeam = team
         
         checkRoundAdvance()
         checkRuleOfSix()
@@ -832,6 +870,21 @@ struct ContentView: View {
             selectedPlayerNumber = availablePlayerNumbers[defaultIndex]
         }
         
+        updateTrigger += 1
+    }
+
+    func switchTeamOrder() {
+        guard canSwitchTeamOrder else {
+            return
+        }
+
+        firstTeam = firstTeam == 1 ? 2 : 1
+
+        if !availablePlayerNumbers.isEmpty {
+            let defaultIndex = min(2, availablePlayerNumbers.count - 1)
+            selectedPlayerNumber = availablePlayerNumbers[defaultIndex]
+        }
+
         updateTrigger += 1
     }
     
@@ -880,7 +933,9 @@ struct ContentView: View {
     }
     
     func undoLastPenalty() {
-        if team1Attempts > team2Attempts {
+        let teamToUndo = lastRecordedTeam == 0 ? inferredLastPenaltyTeam : lastRecordedTeam
+
+        if teamToUndo == 1 {
             if !team1PenaltiesArray.isEmpty {
                 let lastPenalty = team1PenaltiesArray.removeLast()
                 if let encoded = try? JSONEncoder().encode(team1PenaltiesArray) {
@@ -891,7 +946,7 @@ struct ContentView: View {
                     team1Score -= 1
                 }
             }
-        } else {
+        } else if teamToUndo == 2 {
             if !team2PenaltiesArray.isEmpty {
                 let lastPenalty = team2PenaltiesArray.removeLast()
                 if let encoded = try? JSONEncoder().encode(team2PenaltiesArray) {
@@ -903,6 +958,8 @@ struct ContentView: View {
                 }
             }
         }
+
+        lastRecordedTeam = inferredLastPenaltyTeam
         
         let minAttempts = min(team1Attempts, team2Attempts)
         currentRound = max(1, minAttempts + 1)
@@ -919,6 +976,20 @@ struct ContentView: View {
         
         updateTrigger += 1
     }
+
+    var inferredLastPenaltyTeam: Int {
+        if team1Attempts == 0 && team2Attempts == 0 {
+            return 0
+        }
+
+        if team1Attempts > team2Attempts {
+            return 1
+        } else if team2Attempts > team1Attempts {
+            return 2
+        } else {
+            return firstTeam == 1 ? 2 : 1
+        }
+    }
     
     func resetShootout() {
         team1Score = 0
@@ -932,6 +1003,7 @@ struct ContentView: View {
         team2PenaltiesArray = []
         winnerTeam = nil
         loserTurnsLeft = 0
+        lastRecordedTeam = 0
         team1TallyAtRound5 = 0
         team2TallyAtRound5 = 0
         updateTrigger += 1
