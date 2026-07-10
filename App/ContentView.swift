@@ -347,29 +347,27 @@ struct ContentView: View {
     @ViewBuilder
     func portraitContent(viewHeight: CGFloat) -> some View {
         ScrollView {
-            VStack(spacing: 15) {
-                portraitTeamsHeader
-                ruleOfSixCard
-                penaltyHistory
-                    .padding(.top, 5)
-                
+            VStack(spacing: 0) {
                 VStack(spacing: 15) {
-                    if let winner = winnerTeam {
-                        winnerAnnouncementView(winner: winner)
-                            .padding(.horizontal)
-                            .padding(.top, 8)
-                    } else {
-                        portraitInputControls
-                    }
+                    portraitTeamsHeader
+                    ruleOfSixCard
+                    penaltyHistory
+                        .padding(.top, 5)
                     
-                    portraitActionButtons
+                    portraitControlPanel
                 }
+                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
                 .scrollTargetLayout()
                 
-                scorecard
+                VStack(spacing: 15) {
+                    portraitControlPanel
+                        .padding(.top, 10)
+
+                    scorecard
+                }
+                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
                     .scrollTargetLayout()
             }
-            .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
         }
         .scrollTargetBehavior(.viewAligned)
     }
@@ -529,6 +527,21 @@ struct ContentView: View {
             }
         }
         .padding(.horizontal)
+    }
+
+    @ViewBuilder
+    var portraitControlPanel: some View {
+        VStack(spacing: 15) {
+            if let winner = winnerTeam {
+                winnerAnnouncementView(winner: winner)
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+            } else {
+                portraitInputControls
+            }
+            
+            portraitActionButtons
+        }
     }
 
     @ViewBuilder

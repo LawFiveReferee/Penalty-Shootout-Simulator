@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (Build 7)
+
+- Locked portrait mode into two full-height scroll stops so the upper stop ends before the scorecard and the lower stop begins with the scoring controls.
+- Bumped the build number to make Bitrig preview refreshes easy to verify.
+
 ## 1.5.0 (Build 6)
 
 - Removed duplicate portrait scoring controls and kept one control stack before the scorecard.
