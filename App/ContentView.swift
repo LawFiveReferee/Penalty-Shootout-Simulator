@@ -1598,8 +1598,11 @@ struct SettingsView: View {
                                 Menu {
                                     ForEach(colorKeys.filter { $0 != team2Color }, id: \.self) { key in
                                         Button(action: {
+                                            let previousName = colorDisplayName(team1Color)
                                             team1Color = key
-                                            team1Name = colorDisplayName(key)
+                                            if team1Name == previousName {
+                                                team1Name = colorDisplayName(key)
+                                            }
                                         }) {
                                             HStack {
                                                 Circle()
@@ -1648,8 +1651,11 @@ struct SettingsView: View {
                                 Menu {
                                     ForEach(colorKeys.filter { $0 != team1Color }, id: \.self) { key in
                                         Button(action: {
+                                            let previousName = colorDisplayName(team2Color)
                                             team2Color = key
-                                            team2Name = colorDisplayName(key)
+                                            if team2Name == previousName {
+                                                team2Name = colorDisplayName(key)
+                                            }
                                         }) {
                                             HStack {
                                                 Circle()
