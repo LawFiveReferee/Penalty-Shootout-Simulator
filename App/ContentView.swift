@@ -1629,7 +1629,7 @@ struct SettingsView: View {
                                         Circle()
                                             .fill(availableColors[team1Color] ?? .gray)
                                             .frame(width: 20, height: 20)
-                                        Text("Color")
+                                        Text(colorDisplayName(team1Color))
                                             .font(.caption)
                                     }
                                     .padding(.horizontal, 12)
@@ -1682,7 +1682,7 @@ struct SettingsView: View {
                                         Circle()
                                             .fill(availableColors[team2Color] ?? .gray)
                                             .frame(width: 20, height: 20)
-                                        Text("Color")
+                                        Text(colorDisplayName(team2Color))
                                             .font(.caption)
                                     }
                                     .padding(.horizontal, 12)
