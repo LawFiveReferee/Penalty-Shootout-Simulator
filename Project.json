@@ -1,0 +1,52 @@
+{
+  "configs": {
+    "Debug": "debug",
+    "Release": "release"
+  },
+  "name": "Penalty Shootout Simulator",
+  "options": {
+    "groupSortPosition": "bottom",
+    "transitivelyLinkDependencies": false
+  },
+  "settings": {
+    "CODE_SIGN_IDENTITY": "-"
+  },
+  "targets": {
+    "Penalty Shootout Simulator": {
+      "deploymentTarget": "18.0",
+      "info": {
+        "path": "App\/Info.plist",
+        "properties": {
+          "CFBundleDisplayName": "Penalty Shootout Simulator",
+          "CFBundleShortVersionString": "1.1",
+          "CFBundleVersion": "3",
+          "ITSAppUsesNonExemptEncryption": false,
+          "UILaunchScreen": {},
+          "UISupportedInterfaceOrientations": [
+            "UIInterfaceOrientationPortrait",
+            "UIInterfaceOrientationPortraitUpsideDown",
+            "UIInterfaceOrientationLandscapeLeft",
+            "UIInterfaceOrientationLandscapeRight"
+          ]
+        }
+      },
+      "platform": "iOS",
+      "settings": {
+        "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
+        "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
+        "CURRENT_PROJECT_VERSION": "3",
+        "MARKETING_VERSION": "1.1",
+        "PRODUCT_BUNDLE_IDENTIFIER": "com.Stockly.Penalty-Shoot-out-Simulator-B1",
+        "PRODUCT_NAME": "$(TARGET_NAME)",
+        "SWIFT_VERSION": "5.0",
+        "TARGETED_DEVICE_FAMILY": "1,2"
+      },
+      "sources": [
+        {
+          "path": "App"
+        }
+      ],
+      "type": "application"
+    }
+  }
+}
