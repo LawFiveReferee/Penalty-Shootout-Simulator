@@ -403,10 +403,11 @@ struct ContentView: View {
     @ViewBuilder
     var switchTeamOrderButton: some View {
         Button(action: switchTeamOrder) {
-            Label("Switch order", systemImage: "arrow.left.arrow.right")
+            Image(systemName: "arrow.left.arrow.right")
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(canSwitchTeamOrder ? .blue : .secondary)
-                .padding(.horizontal, 8)
+                .frame(width: 24, height: 16)
+                .padding(.horizontal, 7)
                 .padding(.vertical, 5)
                 .background(Color(.systemGray6), in: Capsule())
         }
