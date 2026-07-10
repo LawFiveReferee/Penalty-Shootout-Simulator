@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (Build 6)
+
+- Removed duplicate portrait scoring controls and kept one control stack before the scorecard.
+- Bumped the build number to make Bitrig preview refreshes easy to verify.
+
 ## 1.5.0 (Build 5)
 
 - Removed the duplicate compact portrait controls from the scorecard page.

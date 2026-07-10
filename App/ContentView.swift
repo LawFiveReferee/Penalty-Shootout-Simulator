@@ -347,13 +347,13 @@ struct ContentView: View {
     @ViewBuilder
     func portraitContent(viewHeight: CGFloat) -> some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(spacing: 15) {
+                portraitTeamsHeader
+                ruleOfSixCard
+                penaltyHistory
+                    .padding(.top, 5)
+                
                 VStack(spacing: 15) {
-                    portraitTeamsHeader
-                    ruleOfSixCard
-                    penaltyHistory
-                        .padding(.top, 5)
-                    
                     if let winner = winnerTeam {
                         winnerAnnouncementView(winner: winner)
                             .padding(.horizontal)
@@ -364,29 +364,14 @@ struct ContentView: View {
                     
                     portraitActionButtons
                 }
-                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
                 .scrollTargetLayout()
-
-                VStack(spacing: 10) {
-                    if let winner = winnerTeam {
-                        winnerAnnouncementView(winner: winner)
-                            .padding(.horizontal)
-                            .padding(.top, 10)
-                    } else {
-                        portraitInputControls
-                            .padding(.top, 10)
-                    }
-
-                    portraitActionButtons
-                        .padding(.top, -8)
-
-                    scorecard
-                }
-                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
-                .scrollTargetLayout()
+                
+                scorecard
+                    .scrollTargetLayout()
             }
+            .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
         }
-        .scrollTargetBehavior(.paging)
+        .scrollTargetBehavior(.viewAligned)
     }
     
     @ViewBuilder
