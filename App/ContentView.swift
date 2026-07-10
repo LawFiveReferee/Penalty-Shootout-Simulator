@@ -1701,7 +1701,7 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Link(destination: URL(string: "http://www.law5ref.com/images/Rule-of-6_Referee_Card.pdf")!) {
+                            Link(destination: URL(string: "https://www.law5ref.com/downloads/Penalty-Shoot-out-Scorecard.pdf")!) {
                                 HStack {
                                     Image(systemName: "doc.fill")
                                     Text("Download Wallet Scorecard")
@@ -1720,7 +1720,7 @@ struct SettingsView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Link(destination: URL(string: "http://www.law5ref.com/images/Two_Rule-of-6_Referee_Cards.pdf")!) {
+                            Link(destination: URL(string: "https://www.law5ref.com/downloads/Two-Penalty-Shoot-out-Scorecards.pdf")!) {
                                 HStack {
                                     Image(systemName: "doc.on.doc.fill")
                                     Text("Download Letter Size Scorecards")
@@ -1861,7 +1861,7 @@ struct AboutView: View {
                         .padding(.vertical)
                     
                     VStack(alignment: .leading, spacing: 12) {
-                        Link(destination: URL(string: "http://www.law5ref.com/penaltyshootoutsimulatorprivacypolicy.html")!) {
+                        Link(destination: URL(string: "https://www.law5ref.com/privacy.html")!) {
                             HStack {
                                 Image(systemName: "hand.raised.fill")
                                 Text("Privacy Policy")
@@ -1881,7 +1881,7 @@ struct AboutView: View {
                             .foregroundStyle(.blue)
                         }
                         
-                        Link(destination: URL(string: "http://www.law5ref.com/documentationFAQ.html")!) {
+                        Link(destination: URL(string: "https://www.law5ref.com/penalty-faq.html")!) {
                             HStack {
                                 Image(systemName: "doc.text.fill")
                                 Text("Rule-of-6 Documentation and FAQs")
