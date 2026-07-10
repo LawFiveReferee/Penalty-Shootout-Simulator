@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (Build 5)
+
+- Removed the duplicate compact portrait controls from the scorecard page.
+- Bumped the build number to make Bitrig preview refreshes easy to verify.
+
 ## 1.5.0 (Build 4)
 
 - Changed the shooting-order switch to an icon-only double-arrow button.
