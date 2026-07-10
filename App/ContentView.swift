@@ -369,29 +369,31 @@ struct ContentView: View {
     
     @ViewBuilder
     var portraitTeamsHeader: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 30) {
-                TeamView(
-                    name: team1Name,
-                    color: availableColors[team1Color] ?? .blue,
-                    score: team1Score,
-                    isCurrentTurn: currentTeamTurn == 1
-                )
-                
+        HStack(spacing: 18) {
+            TeamView(
+                name: team1Name,
+                color: availableColors[team1Color] ?? .blue,
+                score: team1Score,
+                isCurrentTurn: currentTeamTurn == 1
+            )
+            
+            VStack(spacing: 3) {
                 Text("vs")
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundStyle(.secondary)
-                
-                TeamView(
-                    name: team2Name,
-                    color: availableColors[team2Color] ?? .red,
-                    score: team2Score,
-                    isCurrentTurn: currentTeamTurn == 2
-                )
-            }
+                    .offset(y: -2)
 
-            switchTeamOrderButton
+                switchTeamOrderButton
+            }
+            .frame(width: 92)
+            
+            TeamView(
+                name: team2Name,
+                color: availableColors[team2Color] ?? .red,
+                score: team2Score,
+                isCurrentTurn: currentTeamTurn == 2
+            )
         }
         .padding(.horizontal)
         .padding(.top, 14)
@@ -402,10 +404,10 @@ struct ContentView: View {
     var switchTeamOrderButton: some View {
         Button(action: switchTeamOrder) {
             Label("Switch order", systemImage: "arrow.left.arrow.right")
-                .font(.caption.weight(.semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundStyle(canSwitchTeamOrder ? .blue : .secondary)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 5)
                 .background(Color(.systemGray6), in: Capsule())
         }
         .buttonStyle(.plain)
