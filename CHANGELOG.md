@@ -8,7 +8,7 @@
 - Changed Support to open the Law Five Referee contact page.
 - Fixed team color changes so custom team names are not overwritten.
 - Updated Settings color buttons to show the selected color name.
-- Changed portrait mode to two paging positions: controls first, scorecard with compact scoring controls second.
+- Changed portrait mode to two paging positions: controls first, scorecard with the same scoring/action controls second.
 - Updated landscape layout sizing so the controls/table split follows the current preview width.
 
 ## 1.5.0 (Build 3)
