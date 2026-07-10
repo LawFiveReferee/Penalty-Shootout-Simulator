@@ -637,6 +637,12 @@ struct ContentView: View {
                             Text("Penalty Shoot-out")
                                 .font(.title2)
                                 .fontWeight(.bold)
+
+                            Text(appVersionDisplay)
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.secondary)
+                                .padding(.top, 5)
                             
                             Spacer()
                             
@@ -717,6 +723,12 @@ struct ContentView: View {
                 ShareSheet(items: [shareText])
             }
         }
+    }
+
+    var appVersionDisplay: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.5.0"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "3"
+        return "v\(version) (\(build))"
     }
     
     func generateShareText() -> String {
