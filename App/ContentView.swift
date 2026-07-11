@@ -347,26 +347,25 @@ struct ContentView: View {
     @ViewBuilder
     func portraitContent(viewHeight: CGFloat) -> some View {
         ScrollView {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 15, pinnedViews: [.sectionHeaders]) {
                 VStack(spacing: 15) {
                     portraitTeamsHeader
                     ruleOfSixCard
                     penaltyHistory
                         .padding(.top, 5)
-                    
-                    portraitControlPanel
                 }
-                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
+                .frame(maxWidth: .infinity, minHeight: max(0, viewHeight - 255), alignment: .top)
                 .scrollTargetLayout()
-                
-                VStack(spacing: 15) {
+
+                Section {
+                    scorecard
+                } header: {
                     portraitControlPanel
                         .padding(.top, 10)
-
-                    scorecard
+                        .padding(.bottom, 6)
+                        .background(Color(.systemBackground))
                 }
-                .frame(maxWidth: .infinity, minHeight: viewHeight, alignment: .top)
-                    .scrollTargetLayout()
+                .scrollTargetLayout()
             }
         }
         .scrollTargetBehavior(.viewAligned)
