@@ -19,7 +19,7 @@
         "properties": {
           "CFBundleDisplayName": "Penalty Shootout Simulator",
           "CFBundleShortVersionString": "1.5.0",
-          "CFBundleVersion": "8",
+          "CFBundleVersion": "9",
           "ITSAppUsesNonExemptEncryption": false,
           "UILaunchScreen": {},
           "UISupportedInterfaceOrientations": [
@@ -34,7 +34,7 @@
       "settings": {
         "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
         "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
-        "CURRENT_PROJECT_VERSION": "8",
+        "CURRENT_PROJECT_VERSION": "9",
         "MARKETING_VERSION": "1.5.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "com.Stockly.Penalty-Shoot-out-Simulator0-b1",
         "PRODUCT_NAME": "$(TARGET_NAME)",

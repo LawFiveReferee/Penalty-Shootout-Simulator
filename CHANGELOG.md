@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (Build 9)
+
+- Tightened upper portrait spacing so the action buttons are not cut off.
+- Bumped the build number to make Bitrig preview refreshes easy to verify.
+
 ## 1.5.0 (Build 8)
 
 - Reworked portrait mode to use one pinned scoring control section instead of duplicated controls.
